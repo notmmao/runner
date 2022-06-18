@@ -1,0 +1,15 @@
+[
+    {
+        "file": "runner_common.json",
+        "title": "通用配置"
+    },
+    {
+        "file": "runner_adb.json",
+        "title": "adb快捷"
+    },
+    {
+        "file": "runner_me.json",
+        "title": "我的配置"
+    }
+
+]

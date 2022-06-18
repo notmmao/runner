@@ -1,0 +1,13 @@
+[
+    {
+        "title": "测试输出",
+        "cmd": "python console.py",
+        "cwd": "test"
+    },
+    {
+        "title": "测试输出(plain)",
+        "cmd": "python console.py",
+        "cwd": "test",
+        "plain": true
+    }
+]
