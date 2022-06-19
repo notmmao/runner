@@ -9,5 +9,36 @@
         "cmd": "python console.py",
         "cwd": "test",
         "plain": true
+    },
+    {
+        "title": "网络配置",
+        "cmd": "sh network.sh",
+        "cwd": "test"
+    },
+    {
+        "title": "ping 佰肚",
+        "cmd": "cmd /c  chcp 65001 & ping www.baidu.com"
+    },
+    {
+        "title": "ping 佰肚(gbk)",
+        "cmd": "cmd /c  chcp 936 & ping www.baidu.com",
+        "encoding": "gbk"
+    },
+    {
+        "title": "切换codepage到utf-8",
+        "cmd": "cmd /c  chcp 65001",
+        "encoding": "gbk",
+        "qss": "color: rgb(0, 150, 0);"
+    },
+    {
+        "title": "切换codepage到gbk",
+        "cmd": "cmd /c  chcp 936",
+        "encoding": "gbk",
+        "qss": "color: rgb(150, 0, 0);"
+    },
+    {
+        "title": "",
+        "cmd": "",
+        "cwd": "test"
     }
 ]

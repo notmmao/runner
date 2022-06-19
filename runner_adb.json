@@ -57,5 +57,13 @@
     {
         "title": "重启动recovery",
         "cmd": "adb reboot recovery"
+    },
+    {
+        "title": "关闭selinux",
+        "cmd": "adb shell setenforce 0"
+    },
+    {
+        "title": "开启selinux",
+        "cmd": "adb shell setenforce 1"
     }
 ]
