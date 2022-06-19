@@ -4,7 +4,7 @@
 '''
 Author: hufeng.mao@carota.ai
 Date: 2022-04-25 21:23:55
-LastEditTime: 2022-06-19 18:01:05
+LastEditTime: 2022-06-19 22:55:20
 Description: 快速启动器
 '''
 
@@ -57,6 +57,10 @@ class Window(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.configPath = "config.json"
+        self.maxStdout =    40960       # 单词stdout最大限制
+        self.maxLogLines =  150         # log最大行数
+        self.logLines =     0           # 当前log行数
+
         self.setWindowIcon(QIcon("runner.png"))
         self.setupUi()
         self.setupWatcher()
@@ -73,8 +77,6 @@ class Window(QMainWindow):
         self.ui.setupUi(self)
         self.setupButtons()
         self.setupQss()
-        self.maxLogLines = 150      # log最大行数
-        self.logLines = 0           # 当前log行数
 
     def setupToolboxButtons(self, configPath):
         with open(configPath, encoding="utf-8") as f:
@@ -94,10 +96,14 @@ class Window(QMainWindow):
 
     def setupButtons(self):
         with open(self.configPath, encoding="utf-8") as f:
-            configs = json.load(f)
+            config = json.load(f)
+            if "maxLogLines" in config:
+                self.maxLogLines = config.get("maxLogLines")
+            if "maxStdout" in config:
+                self.maxStdout = config.get("maxStdout")
 
             self.removeAll(self.ui.configLayout)
-            for item in configs:
+            for item in config["configs"]:
                 # print(cmd)
                 tag = f'加载:`{item["title"]}`配置文件'
                 button = QPushButton(tag, self)
@@ -208,8 +214,8 @@ class Window(QMainWindow):
         item:QListWidgetItem = process.item
         
         a = process.bytesAvailable()
-        if a > 40960:
-            process.read(a - 4090)
+        if a > self.maxStdout:
+            process.read(a - 4096)
             print(f"bytesAvailable to large:{a}, seek to last 4K")
         while True:
             data = process.readLine()
@@ -293,8 +299,11 @@ class Window(QMainWindow):
 
     def onloadConfigButton(self):
         btn = self.sender()
-        self.fadeIn(btn)
-        self.setupToolboxButtons(btn.item["file"])
+        try:
+            self.setupToolboxButtons(btn.item["file"])
+            self.fadeIn(btn)
+        except:
+            self.shake(btn)
 
     def onStyleSelected(self, style):
         self.setStyle(QStyleFactory.create(style))
