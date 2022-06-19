@@ -4,7 +4,7 @@
 '''
 Author: hufeng.mao@carota.ai
 Date: 2022-04-25 21:23:55
-LastEditTime: 2022-06-18 23:58:34
+LastEditTime: 2022-06-19 18:01:05
 Description: 快速启动器
 '''
 
@@ -214,7 +214,7 @@ class Window(QMainWindow):
         while True:
             data = process.readLine()
             if not data: return
-            text = bytes(data).decode()
+            text = bytes(data).decode(item.encoding)
             if text.count("\n") > 1:
                 print(text.count("\n"), text)
             self.processText(self.ui.textEditAppTrace, text, item.bar, item.plain)
@@ -223,7 +223,7 @@ class Window(QMainWindow):
         process:QProcess = self.sender()
         item:QListWidgetItem = process.item
         data = process.readAllStandardError()
-        text = bytes(data).decode()
+        text = bytes(data).decode(item.encoding)
         self.processText(self.ui.textEditAppTrace, text, item.bar, item.plain)
 
     def onProcessStarted(self):
@@ -268,6 +268,7 @@ class Window(QMainWindow):
         cmd = btn.userdata["cmd"]
         cwd = btn.userdata.get("cwd", "")
         plain = btn.userdata.get("plain", False)
+        encoding = btn.userdata.get("encoding", "utf-8")
         cwd = os.path.abspath(cwd)
         self.ui.textEditStatusTrace.append(cmd)
         process = QProcess(self)
@@ -287,6 +288,7 @@ class Window(QMainWindow):
 
         process.item = QListWidgetItem(qta.icon("ei.arrow-right"), cmd)
         process.item.plain = plain
+        process.item.encoding = encoding
         process.start(cmd)
 
     def onloadConfigButton(self):
