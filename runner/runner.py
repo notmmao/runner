@@ -4,14 +4,13 @@
 '''
 Author: hufeng.mao@carota.ai
 Date: 2022-04-25 21:23:55
-LastEditTime: 2022-06-20 22:01:55
+LastEditTime: 2022-06-20 23:55:48
 Description: 快速启动器
 '''
 
 import json
 import sys
 import os
-import io
 import qtawesome as qta
 from datetime import datetime
 
@@ -23,11 +22,11 @@ from PyQt5.QtWidgets import (
     QProgressBar, QVBoxLayout, QHBoxLayout, QMessageBox, QLabel, QWidget, QGraphicsOpacityEffect
 )
 from PyQt5.QtCore import QFileSystemWatcher
-import highlighter
+from .highlighter import Highlighter
 
-import runner_ui
+from .runner_ui import Ui_MainWindow
 
-hl = highlighter.Highlighter()
+hl = Highlighter()
 
 class ProcessItemWidget(QWidget):
     # itemDeleted = pyqtSignal(QListWidgetItem)
@@ -61,6 +60,10 @@ class Window(QMainWindow):
         self.maxLogLines =  150         # log最大行数
         self.logLines =     0           # 当前log行数
         self.defaultEncoding = "gbk"    # stdout默认输出encoding
+        self.rp = os.path.dirname(os.path.abspath(__file__))    # 相对目录
+
+        if not os.path.exists(self.configPath):
+            self.configPath = os.path.join(self.rp, self.configPath)
 
         self.setWindowIcon(QIcon("runner.png"))
         self.setupUi()
@@ -74,12 +77,14 @@ class Window(QMainWindow):
 
     def setupUi(self):
         self.selectIndex = None
-        self.ui = runner_ui.Ui_MainWindow()
+        self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setupButtons()
         self.setupQss()
 
     def setupToolboxButtons(self, configPath):
+        if not os.path.exists(configPath):
+            configPath = os.path.join(self.rp, configPath)
         with open(configPath, encoding="utf-8") as f:
             config = json.load(f)
 
