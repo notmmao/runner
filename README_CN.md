@@ -5,7 +5,7 @@
 `runner`是一个`可配置的`快速启动器,用于`启动(运行)`常用的`命令(程序)`.
 它附带了`log`输出界面,方便用户`查看(染色)`和`保存`log.并且特殊格式的log输出还能驱动程序绘制`进度条`.
 
-![主界面](imgs/main.png)
+![主界面](https://i.ibb.co/CtZ55GP/main.png)
 
 ## 安装
 
@@ -15,7 +15,8 @@ pip install -r requirements.txt
 
 ## 启动
 
-python runner.py
+- python runner.py 从使用代码中启动
+- runner 直接启动
 
 ## 配置
 

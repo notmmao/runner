@@ -3,14 +3,14 @@
 from setuptools import setup
 import runner
 
-with open("README_CN.md", "r", encoding="utf-8") as f:
+with open("README_CN.rst", "r", encoding="utf-8") as f:
     long_description = f.read()
 
 with open("requirements.txt", "r", encoding="utf8") as f:
     requires = f.read()
 
 setup(
-    name='runner',
+    name='qtrunner',
     version=runner.__version__,
     author=runner.__author__,
     author_email=runner.__author_email__,
