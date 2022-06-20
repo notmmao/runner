@@ -4,7 +4,7 @@
 '''
 Author: hufeng.mao@carota.ai
 Date: 2022-04-25 21:23:55
-LastEditTime: 2022-06-19 22:55:20
+LastEditTime: 2022-06-20 22:01:55
 Description: 快速启动器
 '''
 
@@ -57,9 +57,10 @@ class Window(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.configPath = "config.json"
-        self.maxStdout =    40960       # 单词stdout最大限制
+        self.maxStdout =    40960       # 单次stdout最大字节
         self.maxLogLines =  150         # log最大行数
         self.logLines =     0           # 当前log行数
+        self.defaultEncoding = "gbk"    # stdout默认输出encoding
 
         self.setWindowIcon(QIcon("runner.png"))
         self.setupUi()
@@ -101,6 +102,8 @@ class Window(QMainWindow):
                 self.maxLogLines = config.get("maxLogLines")
             if "maxStdout" in config:
                 self.maxStdout = config.get("maxStdout")
+            if "defaultEncoding" in config:
+                self.defaultEncoding = config.get("defaultEncoding")
 
             self.removeAll(self.ui.configLayout)
             for item in config["configs"]:
@@ -274,7 +277,7 @@ class Window(QMainWindow):
         cmd = btn.userdata["cmd"]
         cwd = btn.userdata.get("cwd", "")
         plain = btn.userdata.get("plain", False)
-        encoding = btn.userdata.get("encoding", "utf-8")
+        encoding = btn.userdata.get("encoding", self.defaultEncoding)
         cwd = os.path.abspath(cwd)
         self.ui.textEditStatusTrace.append(cmd)
         process = QProcess(self)

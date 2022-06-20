@@ -1,6 +1,7 @@
 {
     "maxLogLines": 1000,
     "maxStdout": 40960,
+    "defaultEncoding": "gbk",
     "configs": [
         {
             "file": "runner_common.json",
