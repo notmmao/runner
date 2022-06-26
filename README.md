@@ -1,6 +1,6 @@
 # runner
 
-* [中文说明](README_CN.md)
+* [中文说明](https://github.com/notmmao/runner/blob/master/README_CN.md)
 
 ## introduction
 
@@ -11,7 +11,11 @@ It comes with a `log` output interface, which is convenient for users to `view (
 
 ## install
 
-pip install -r requirements.txt
+> pip install -r requirements.txt
+
+or
+
+> pip install qtrunner
 
 only tested on the `windwos` platform, recommended to use the `python 3.7` version.
 

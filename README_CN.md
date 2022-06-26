@@ -1,5 +1,7 @@
 # runner
 
+* [README.en](https://github.com/notmmao/runner/blob/master/README.md)
+
 ## 介绍
 
 `runner`是一个`可配置的`快速启动器,用于`启动(运行)`常用的`命令(程序)`.
@@ -9,7 +11,11 @@
 
 ## 安装
 
-pip install -r requirements.txt
+> pip install -r requirements.txt
+
+or
+
+> pip install qtrunner
 
 目前只在`windwos`平台测试过, 推荐使用`python 3.7`版本.
 
