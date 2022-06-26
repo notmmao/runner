@@ -33,8 +33,8 @@
         "qss": "color: rgb(150, 0, 0);"
     },
     {
-        "title": "",
-        "cmd": "",
+        "title": "打开防火墙",
+        "cmd": "cmd /c firewall.cpl",
         "cwd": "test"
     }
 ]
