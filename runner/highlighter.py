@@ -38,11 +38,11 @@ STYLES = {
     'numbers': format('brown'),
 }
 
-default = QTextCharFormat()
 
 class Highlighter(object):
 
     def __init__(self, formats=None):
+        self.default = QTextCharFormat()
         self.styles = styles = dict(STYLES, **(formats or {}))
         self.rules = [
             # Numeric literals

@@ -65,7 +65,7 @@ class Window(QMainWindow):
         if not os.path.exists(self.configPath):
             self.configPath = os.path.join(self.rp, self.configPath)
 
-        self.setWindowIcon(QIcon("runner.png"))
+        self.setWindowIcon(qta.icon("fa.terminal"))
         self.setupUi()
         self.setupWatcher()
 
@@ -115,6 +115,7 @@ class Window(QMainWindow):
                 # print(cmd)
                 tag = f'加载:`{item["title"]}`配置文件'
                 button = QPushButton(tag, self)
+                button.setIcon(qta.icon("fa.file-text-o"))
                 button.item = item
                 button.clicked.connect(self.onloadConfigButton)
                 self.ui.configLayout.addWidget(button)
@@ -209,13 +210,27 @@ class Window(QMainWindow):
         formats.sort(key=lambda a: a[0])    # 根据index排序
         for i, l, f in formats:
             if i > n:
-                cursor.insertText(text[n:i], highlighter.default)
+                cursor.insertText(text[n:i], hl.default)
             cursor.insertText(text[i:i+l], f)
             n = i + l
         if n < t:
-            cursor.insertText(text[n:], highlighter.default)
+            cursor.insertText(text[n:], hl.default)
 
         edit.moveCursor(QTextCursor.End)
+
+    def byte2string(self, data:bytes, encoding):
+        if encoding == "unknown":
+            try:
+                text = data.decode("utf-8")
+            except UnicodeDecodeError:
+                try:
+                    text = data.decode("gbk")
+                except:
+                    print("error unknown encoding")
+                    text = data.hex()
+        else:
+            text = data.decode(encoding)
+        return text
 
     def onProcessStdout(self):
         process:QProcess = self.sender()
@@ -228,7 +243,7 @@ class Window(QMainWindow):
         while True:
             data = process.readLine()
             if not data: return
-            text = bytes(data).decode(item.encoding)
+            text = self.byte2string(bytes(data), item.encoding)
             if text.count("\n") > 1:
                 print(text.count("\n"), text)
             self.processText(self.ui.textEditAppTrace, text, item.bar, item.plain)
@@ -237,7 +252,8 @@ class Window(QMainWindow):
         process:QProcess = self.sender()
         item:QListWidgetItem = process.item
         data = process.readAllStandardError()
-        text = bytes(data).decode(item.encoding)
+        # text = bytes(data).decode(item.encoding)
+        text = self.byte2string(bytes(data), item.encoding)
         self.processText(self.ui.textEditAppTrace, text, item.bar, item.plain)
 
     def onProcessStarted(self):
@@ -282,7 +298,7 @@ class Window(QMainWindow):
         cmd = btn.userdata["cmd"]
         cwd = btn.userdata.get("cwd", "")
         plain = btn.userdata.get("plain", False)
-        encoding = btn.userdata.get("encoding", self.defaultEncoding)
+        encoding = btn.userdata.get("encoding", "unknown")
         cwd = os.path.abspath(cwd)
         self.ui.textEditStatusTrace.append(cmd)
         process = QProcess(self)
@@ -347,7 +363,7 @@ class Window(QMainWindow):
 
         
 def main():
-
+    QApplication.setStyle(QStyleFactory.create("Fusion"))
     app = QApplication(sys.argv)
 
     win = Window()
