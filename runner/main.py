@@ -4,7 +4,7 @@
 '''
 Author: hufeng.mao@carota.ai
 Date: 2022-04-25 21:23:55
-LastEditTime: 2022-06-20 23:55:48
+LastEditTime: 2022-09-03 15:00:54
 Description: 快速启动器
 '''
 
@@ -22,9 +22,9 @@ from PyQt5.QtWidgets import (
     QProgressBar, QVBoxLayout, QHBoxLayout, QMessageBox, QLabel, QWidget, QGraphicsOpacityEffect
 )
 from PyQt5.QtCore import QFileSystemWatcher
-from .highlighter import Highlighter
+from runner.runner_ui import Ui_MainWindow
+from runner.highlighter import Highlighter
 
-from .runner_ui import Ui_MainWindow
 
 hl = Highlighter()
 
@@ -84,7 +84,12 @@ class Window(QMainWindow):
 
     def setupToolboxButtons(self, configPath):
         if not os.path.exists(configPath):
-            configPath = os.path.join(self.rp, configPath)
+            rp_configPath = os.path.join(self.rp, configPath)
+            if not os.path.exists(rp_configPath):
+                home_dir = os.path.expanduser('~')
+                configPath = os.path.join(home_dir, configPath)
+            else:
+                configPath = rp_configPath
         with open(configPath, encoding="utf-8") as f:
             config = json.load(f)
 
