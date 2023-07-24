@@ -46,14 +46,17 @@ config.json
 ### 子配置文件
 
 runner_xxxx.json
-```json
+```js
 [
     {
         "title": "切换codepage到gbk(慎用)",  // ui上显示的名称
         "cmd": "cmd /c  chcp 936",          // 命令行
         "encoding": "gbk",                  // 对应的输出编码(可选)
         "qss": "color: rgb(150, 0, 0);",    // ui上对应的样式(可选)
-        "cwd": ""                           // 命令启动的工作目录(可选,默认当前)
+        "cwd": "",                          // 命令启动的工作目录(可选,默认当前)
+        "env": {                            // 命令启动的环境变量(可选, 0.0.6版本支持)
+            "GP_LANGUAGE": "zh_CN"
+        }
     }
 ]
 ```

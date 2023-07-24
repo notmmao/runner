@@ -58,7 +58,7 @@ sub configuration file
 
 runner_xxxx.json
 
-.. code:: json
+.. code:: js
 
    [
        {
@@ -66,6 +66,9 @@ runner_xxxx.json
            "cmd": "cmd /c  chcp 936",          // command ling
            "encoding": "gbk",                  // output encoding
            "qss": "color: rgb(150, 0, 0);",    // ui styles in qss format
-           "cwd": ""                           // current working directory
-       }
+           "cwd": "",                          // current working directory
+           "env": {                            // environment variables 
+                "GP_LANGUAGE": "zh_CN"
+            }
+        }
    ]

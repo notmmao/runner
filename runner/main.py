@@ -4,7 +4,7 @@
 '''
 Author: hufeng.mao@carota.ai
 Date: 2022-04-25 21:23:55
-LastEditTime: 2022-09-03 15:00:54
+LastEditTime: 2023-07-24 17:38:05
 Description: 快速启动器
 '''
 
@@ -14,7 +14,7 @@ import os
 import qtawesome as qta
 from datetime import datetime
 
-from PyQt5.QtCore import QProcess, QSize, QPropertyAnimation, QEasingCurve, QPoint, QTimer
+from PyQt5.QtCore import QProcess, QSize, QPropertyAnimation, QEasingCurve, QPoint, QTimer, QProcessEnvironment
 from PyQt5.QtGui import QTextCursor, QIcon
 
 from PyQt5.QtWidgets import (
@@ -304,9 +304,13 @@ class Window(QMainWindow):
         cwd = btn.userdata.get("cwd", "")
         plain = btn.userdata.get("plain", False)
         encoding = btn.userdata.get("encoding", "unknown")
+        env = btn.userdata.get("env", {})
         cwd = os.path.abspath(cwd)
         self.ui.textEditStatusTrace.append(cmd)
         process = QProcess(self)
+        qenv = QProcessEnvironment.systemEnvironment()
+        for k, v in env.items():
+            qenv.insert(k, v)
         time_tag = self.now()
         self.ui.textEditAppTrace.append("="*60)
         self.ui.textEditAppTrace.append(f"{title} @ {time_tag}")
@@ -320,6 +324,7 @@ class Window(QMainWindow):
         process.started.connect(self.onProcessStarted)
         process.finished.connect(self.onProcessFinished)
         process.setWorkingDirectory(cwd)
+        process.setProcessEnvironment(qenv)
 
         process.item = QListWidgetItem(qta.icon("ei.arrow-right"), cmd)
         process.item.plain = plain
@@ -342,6 +347,7 @@ class Window(QMainWindow):
         self.ui.textEditStatusTrace.clear()
         self.logLines = 0
         self.fadeIn(self.ui.pushButtonClearLog)
+        self.reset()
 
     def onSaveLog(self):
         self.fadeIn(self.ui.pushButtonSaveLog)

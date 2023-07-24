@@ -36,5 +36,12 @@
         "title": "打开防火墙",
         "cmd": "cmd /c firewall.cpl",
         "cwd": "test"
+    },
+    {
+        "title": "查看环境变量",
+        "cmd": "env",
+        "env": {
+            "GP_LANGUAGES": "zh_CN"
+        }
     }
 ]
